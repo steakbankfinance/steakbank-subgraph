@@ -1,0 +1,19 @@
+type LogUnStaker @entity {
+  # addresss
+  id: ID!
+  data: [Record]!
+}
+
+type ClaimedUnStaker @entity {
+  # addresss
+  id: ID!
+  data: [Record]!
+}
+
+type Record @entity {
+  # addresss
+  id: ID!
+  bnbAmount: BigInt!
+  lbnbAmount: BigInt!
+  timestamp: BigInt!
+}

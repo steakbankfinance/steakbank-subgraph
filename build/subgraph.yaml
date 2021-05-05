@@ -1,0 +1,28 @@
+specVersion: 0.0.2
+description: SteakBank for BSC
+repository: https://github.com/steakbankfinance/steakbank
+schema:
+  file: schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: SteakBank
+    network: bsc
+    source:
+      address: "0x79db0daa012f4b98f332a9d45c80a1a3ffaa6f9a"
+      abi: SteakBank
+      startBlock: 6299411
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Unstaker
+      abis:
+        - name: SteakBank
+          file: SteakBank/abis/SteakBank.json
+      eventHandlers:
+        - event: ClaimedUnstake(indexed address,uint256,uint256)
+          handler: handleClaimedUnstake
+        - event: LogUnstake(indexed address,uint256,uint256,uint256)
+          handler: handleLogUnstake
+      file: SteakBank/SteakBank.wasm
