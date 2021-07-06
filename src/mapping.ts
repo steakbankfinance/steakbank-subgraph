@@ -19,12 +19,13 @@ export function handleClaimedUnstake(event: ClaimedUnstake): void {
   record.bnbAmount = event.params.amount;
   record.lbnbAmount = BigInt.fromI32(0);
   record.timestamp = event.block.timestamp;
+  record.index = event.params.index;
   record.save();
   unStaker.data = data.concat([record.id]);
   unStaker.save();
 }
 
-export function handleLogdUnstake(event: LogUnstake): void {
+export function handleLogUnstake(event: LogUnstake): void {
   let unStaker = LogUnStaker.load(event.params.staker.toHexString());
   if (unStaker === null) {
     unStaker = new LogUnStaker(event.params.staker.toHexString());
@@ -42,6 +43,7 @@ export function handleLogdUnstake(event: LogUnstake): void {
   record.bnbAmount = event.params.bnbAmount;
   record.lbnbAmount = event.params.lbnbAmount;
   record.timestamp = event.block.timestamp;
+  record.index = event.params.index;
   record.save();
   unStaker.data = data.concat([record.id]);
   unStaker.save();

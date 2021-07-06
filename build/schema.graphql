@@ -16,4 +16,5 @@ type Record @entity {
   bnbAmount: BigInt!
   lbnbAmount: BigInt!
   timestamp: BigInt!
+  index: BigInt!
 }
