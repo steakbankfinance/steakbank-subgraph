@@ -1,6 +1,15 @@
 import { BigInt } from "@graphprotocol/graph-ts";
-import { ClaimedUnStaker, Record, LogUnStaker } from "../generated/schema";
-import { ClaimedUnstake, LogUnstake } from "../generated/SteakBank/SteakBank";
+import {
+  ClaimedUnStaker,
+  Record,
+  LogUnStaker,
+  StakeMarket,
+} from "../generated/schema";
+import {
+  ClaimedUnstake,
+  LogUnstake,
+  LogUpdateLBNBToBNBExchangeRate,
+} from "../generated/SteakBank/SteakBank";
 
 export function handleClaimedUnstake(event: ClaimedUnstake): void {
   let unStaker = ClaimedUnStaker.load(event.params.staker.toHexString());
@@ -16,6 +25,7 @@ export function handleClaimedUnstake(event: ClaimedUnstake): void {
       .concat("-")
       .concat(BigInt.fromI32(data.length).toString())
   );
+
   record.bnbAmount = event.params.amount;
   record.lbnbAmount = BigInt.fromI32(0);
   record.timestamp = event.block.timestamp;
@@ -47,4 +57,18 @@ export function handleLogUnstake(event: LogUnstake): void {
   record.save();
   unStaker.data = data.concat([record.id]);
   unStaker.save();
+}
+
+export function handleLogUpdateLBNBToBNBExchangeRate(
+  event: LogUpdateLBNBToBNBExchangeRate
+): void {
+  const stakeMarket = new StakeMarket(
+    event.transaction.hash
+      .toHexString()
+      .concat(event.params.LBNBTotalSupply.toHexString())
+  );
+  stakeMarket.timestamp = event.block.timestamp;
+  stakeMarket.lBNBToBNBExchangeRate = event.params.LBNBToBNBExchangeRate;
+  stakeMarket.lbnbTotalSupply = event.params.LBNBTotalSupply;
+  stakeMarket.save();
 }

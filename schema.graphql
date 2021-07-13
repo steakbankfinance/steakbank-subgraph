@@ -18,3 +18,11 @@ type Record @entity {
   timestamp: BigInt!
   index: BigInt!
 }
+
+type StakeMarket @entity {
+  # addresss
+  id: ID!
+  lBNBToBNBExchangeRate: BigInt!
+  timestamp: BigInt!
+  lbnbTotalSupply: BigInt!
+}
